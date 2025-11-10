@@ -1,38 +1,28 @@
-import {
-  useReadContract,
-  useBlockNumber,
-  useConnect,
-  useAccount,
-  useDisconnect,
-  useWriteContract,
-} from 'wagmi';
+import { useConnect, useAccount, useDisconnect, useWriteContract } from 'wagmi';
 import { toast } from 'sonner';
 import { PaperAirplaneIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import abi from '../abi.json';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
-const ContractAddress = '0x5FbDB2315678afecb367f032d93F642f64180aa3';
+const ContractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
 
-const MessageBoard = () => {
+const MessageBoard = ({
+  messages,
+  isFetching,
+  channel,
+}: {
+  messages: any[];
+  isFetching: boolean;
+  channel: number;
+}) => {
   const [newMsg, setNewMsg] = useState('');
   const [isConnecting, setConnecting] = useState(false);
 
-  const read = useReadContract({
-    address: ContractAddress,
-    abi,
-    functionName: 'getMessages',
-  });
-  const { data: blockNumber } = useBlockNumber({ watch: true });
-  const { data: messages = [], refetch, isFetching } = read;
   const { isConnected } = useAccount();
   const { isPending, writeContract } = useWriteContract();
 
   const { connectors, connect } = useConnect();
   const { disconnect } = useDisconnect();
-
-  useEffect(() => {
-    refetch();
-  }, [blockNumber]);
 
   function connectWallet() {
     setConnecting(true);
@@ -63,7 +53,7 @@ const MessageBoard = () => {
           address: ContractAddress,
           abi,
           functionName: 'postMessage',
-          args: [newMsg, 1],
+          args: [newMsg, channel],
         },
         {
           onSuccess() {
@@ -95,7 +85,7 @@ const MessageBoard = () => {
         </div>
         <span className="text-sm text-gray-600">基于区块链的去中心化社交应用（仅用于演示）</span>
       </div>
-      <div className='h-4/5 overflow-y-auto'>
+      <div className="h-4/5 overflow-y-auto">
         {isFetching && <p className="mt-4">加载中...</p>}
         {!isFetching && (messages as any[]).length === 0 && <p className="mt-4 text-center">暂无消息</p>}
         {!isFetching &&
