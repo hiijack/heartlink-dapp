@@ -3,6 +3,7 @@ import { toast } from 'sonner';
 import { PaperAirplaneIcon, ArrowRightStartOnRectangleIcon } from '@heroicons/react/24/outline';
 import abi from '../abi.json';
 import { useState } from 'react';
+import { getErrorMsg } from '../utils';
 
 const ContractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
 
@@ -29,13 +30,12 @@ const MessageBoard = ({
     connect(
       { connector: connectors[0] },
       {
-        onSuccess(data) {
-          console.log(data);
+        onSuccess() {
           setConnecting(false);
         },
         onError(err) {
           console.error(err);
-          toast.error('连接失败');
+          toast.error(getErrorMsg(err));
           setConnecting(false);
         },
       }
@@ -60,7 +60,7 @@ const MessageBoard = ({
             setNewMsg('');
           },
           onError(err) {
-            toast.error('已取消发送');
+            toast.error(getErrorMsg(err));
             console.error(err);
           },
         }
