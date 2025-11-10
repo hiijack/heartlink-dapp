@@ -10,7 +10,7 @@ const config = createConfig({
   chains: [hardhat],
   connectors: [injected()],
   transports: {
-    [hardhat.id]: http(import.meta.env.VITE_RPC_URL), // RPC 地址
+    [hardhat.id]: http('http://118.195.149.174:8545'), // RPC 地址
   },
 });
 
