@@ -94,7 +94,7 @@ const MessageBoard = ({
               <img className="h-11 w-11" src={`https://joesch.moe/api/v1/${msg.author}`} alt="头像" />
               <div>
                 <p>
-                  <span className="text-blue-600 mr-2 hover:underline cursor-pointer">
+                  <span className="text-blue-600 mr-2 hover:underline cursor-pointer" title={msg.author}>
                     @{msg.author.slice(0, 6)}...{msg.author.slice(-4)}
                   </span>
                   <span className="text-sm text-gray-500">

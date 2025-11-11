@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
+import { useBlockNumber, useReadContract } from 'wagmi';
 import Channel from './components/Channel';
 import MessageBoard from './components/MessageBoard';
-import { useBlockNumber, useReadContract } from 'wagmi';
 import abi from './abi.json';
-import { useEffect, useState } from 'react';
 
 const ContractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
 
@@ -38,6 +39,7 @@ function App() {
         isFetching={isFetching}
         channel={curChannel}
       />
+      <Analytics />
     </div>
   );
 }
